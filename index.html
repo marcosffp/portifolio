@@ -8,7 +8,7 @@
   <title>Marcosffp Website</title>
 
   <link rel="shortcut icon" href="./assets/images/logo_icon.png" type="image/x-icon">
-  <link rel="stylesheet" href="./assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
       <div class="sidebar-info">
 
         <figure class="avatar-box">
-          <img src="./assets/images/imagem_perfil.jpg" alt="Marcos Alberto" width="80">
+          <img src="/assets/img/imagem_perfil.jpg" alt="Marcos Alberto" width="80">
         </figure>
 
         <div class="info-content">
@@ -154,7 +154,7 @@
             <button class="navbar-link" data-nav-link>Blog</button>
           </li>
 
-         <!-- <li class="navbar-item">
+          <!-- <li class="navbar-item">
             <button class="navbar-link" data-nav-link>Contato</button>
           </li>-->
 
@@ -203,7 +203,7 @@
             <li class="service-item">
 
               <div class="service-icon-box">
-                <img src="./assets/images/icon-design.svg
+                <img src="/assets/img/icon-design.svg
                 " alt="design icon" width="40">
               </div>
 
@@ -220,7 +220,7 @@
             <li class="service-item">
 
               <div class="service-icon-box">
-                <img src="./assets/images/icon-dev.svg" alt="Web development icon" width="40">
+                <img src="/assets/img/icon-dev.svg" alt="Web development icon" width="40">
               </div>
 
               <div class="service-content-box">
@@ -236,7 +236,7 @@
             <li class="service-item">
 
               <div class="service-icon-box">
-                <img src="./assets/images/icon-app.svg" alt="mobile app icon" width="40">
+                <img src="/assets/img/icon-app.svg" alt="mobile app icon" width="40">
               </div>
 
               <div class="service-content-box">
@@ -252,7 +252,7 @@
             <li class="service-item">
 
               <div class="service-icon-box">
-                <img src="./assets/images/icon-photo.svg" alt="camera icon" width="40">
+                <img src="/assets/img/icon-photo.svg" alt="camera icon" width="40">
               </div>
 
               <div class="service-content-box">
@@ -380,10 +380,10 @@
 
             <div class="modal-img-wrapper">
               <figure class="modal-avatar-box">
-                <img src="./assets/images/avatar-1.png" alt="Daniel lewis" width="80" data-modal-img>
+                <img src="/assets/img/avatar-1.png" alt="Daniel lewis" width="80" data-modal-img>
               </figure>
 
-              <img src="./assets/images/icon-quote.svg" alt="quote icon">
+              <img src="/assets/img/icon-quote.svg" alt="quote icon">
             </div>
 
             <div class="modal-content">
@@ -410,7 +410,7 @@
 
 
 
-       <!--<section class="clients">
+        <!--<section class="clients">
 
           <h3 class="h3 clients-title">Clientes</h3>
 
@@ -486,7 +486,8 @@
               <span>2021 — 2023</span>
 
               <p class="timeline-text">
-                Concluí o Ensino Médio Profissionalizante, abrangendo tanto o Ensino Médio quanto o curso Técnico em Eletrotécnica.
+                Concluí o Ensino Médio Profissionalizante, abrangendo tanto o Ensino Médio quanto o curso Técnico em
+                Eletrotécnica.
               </p>
 
             </li>
@@ -525,7 +526,12 @@
               <span>1° semestre de 2024</span>
 
               <p class="timeline-text">
-                O projeto "Cadê Meu Pet" foi desenvolvido no âmbito do trabalho interdisciplinar de Aplicação Web durante o primeiro período do curso de Engenharia de Software na PUC Minas. O objetivo é criar uma plataforma web que auxilie na busca e reencontro de animais de estimação perdidos. A iniciativa nasceu da identificação da dificuldade enfrentada por muitos donos ao tentar localizar seus pets desaparecidos, além da necessidade de um canal eficiente e centralizado para compartilhar informações sobre animais encontrados.
+                O projeto "Cadê Meu Pet" foi desenvolvido no âmbito do trabalho interdisciplinar de Aplicação Web
+                durante o primeiro período do curso de Engenharia de Software na PUC Minas. O objetivo é criar uma
+                plataforma web que auxilie na busca e reencontro de animais de estimação perdidos. A iniciativa nasceu
+                da identificação da dificuldade enfrentada por muitos donos ao tentar localizar seus pets desaparecidos,
+                além da necessidade de um canal eficiente e centralizado para compartilhar informações sobre animais
+                encontrados.
               </p>
 
             </li>
@@ -598,111 +604,75 @@
 
       </article>
 
-      <article class="portfolio" data-page="portfólio">
+<article class="portfolio" data-page="portfólio">
+  <header>
+    <h2 class="h2 article-title">Portfólio</h2>
+  </header>
 
-        <header>
-          <h2 class="h2 article-title">Portfólio</h2>
-        </header>
+  <section class="projects">
+    <ul class="filter-list">
+      <li class="filter-item">
+        <button class="active" data-filter-btn data-category="all">Todos</button>
+      </li>
+      <li class="filter-item">
+        <button data-filter-btn data-category="project management">Gestão de Projeto</button>
+      </li>
+      <li class="filter-item">
+        <button data-filter-btn data-category="web development">Desenvolvimento Web</button>
+      </li>
+    </ul>
 
-        <section class="projects">
+    <div class="filter-select-box">
+      <button class="filter-select" data-select>
+        <div class="select-value" data-select-value>Selecione uma categoria</div>
+        <div class="select-icon">
+          <ion-icon name="chevron-down"></ion-icon>
+        </div>
+      </button>
 
-          <ul class="filter-list">
+      <ul class="select-list">
+        <li class="select-item">
+          <button data-select-item data-category="all">Todos</button>
+        </li>
+        <li class="select-item">
+          <button data-select-item data-category="project management">Gestão de Projeto</button>
+        </li>
+        <li class="select-item">
+          <button data-select-item data-category="web development">Desenvolvimento Web</button>
+        </li>
+      </ul>
+    </div>
 
-            <li class="filter-item">
-              <button class="active" data-filter-btn>All</button>
-            </li>
+    <ul class="project-list">
+      <li class="project-item active" data-filter-item data-category="web development">
+        <a href="#">
+          <figure class="project-img">
+            <div class="project-item-icon-box">
+              <ion-icon name="eye-outline"></ion-icon>
+            </div>
+            <img src="/assets/img/projeto_1.jpg" alt="PersonalWebsite-JSONServer" loading="lazy">
+          </figure>
+          <h3 class="project-title">PersonalWebsite-JSONServer</h3>
+          <p class="project-category">Desenvolvimento Web</p>
+        </a>
+      </li>
 
-            <li class="filter-item">
-              <button data-filter-btn>Web design</button>
-            </li>
+      <li class="project-item active" data-filter-item data-category="web development">
+        <a href="https://cademeupet.onrender.com">
+          <figure class="project-img">
+            <div class="project-item-icon-box">
+              <ion-icon name="eye-outline"></ion-icon>
+            </div>
+            <img src="/assets/img/projeto_2.jpg" alt="Cadê Meu Pet?" loading="lazy">
+          </figure>
+          <h3 class="project-title">Cadê Meu Pet?</h3>
+          <p class="project-category">Desenvolvimento Web</p>
+        </a>
+      </li>
+    </ul>
+  </section>
+</article>
 
-            <li class="filter-item">
-              <button data-filter-btn>Applications</button>
-            </li>
-
-            <li class="filter-item">
-              <button data-filter-btn>Web development</button>
-            </li>
-
-          </ul>
-
-          <div class="filter-select-box">
-
-            <button class="filter-select" data-select>
-
-              <div class="select-value" data-selecct-value>Select category</div>
-
-              <div class="select-icon">
-                <ion-icon name="chevron-down"></ion-icon>
-              </div>
-
-            </button>
-
-            <ul class="select-list">
-
-              <li class="select-item">
-                <button data-select-item>All</button>
-              </li>
-
-              <li class="select-item">
-                <button data-select-item>Web design</button>
-              </li>
-
-              <li class="select-item">
-                <button data-select-item>Applications</button>
-              </li>
-
-              <li class="select-item">
-                <button data-select-item>Web development</button>
-              </li>
-
-            </ul>
-
-          </div>
-
-          <ul class="project-list">
-
-            <li class="project-item  active" data-filter-item data-category="web development">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/projeto_1.jpg" alt="finance" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">PersonalWebsite-JSONServer
-                </h3>
-
-                <p class="project-category">Web development</p>
-
-              </a>
-            </li>
-
-            <li class="project-item  active" data-filter-item data-category="web development">
-              <a href="https://cademeupet.onrender.com">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/projeto_2.jpg" alt="orizon" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">Cadê Meu Pet?</h3>
-
-                <p class="project-category">Web development</p>
-
-              </a>
-            </li>
-          </ul>
-
-        </section>
-
-      </article>
 
       <article class="blog" data-page="blog">
 
@@ -718,7 +688,8 @@
               <a href="https://imasters.com.br/tecnologia/computacao-quantica-desafiando-a-criptografia-classica">
 
                 <figure class="blog-banner-box">
-                  <img src="./assets/images/blog_1.jpg" alt="Computação quântica: desafiando a criptografia clássica" loading="lazy">
+                  <img src="/assets/img/blog_1.jpg" alt="Computação quântica: desafiando a criptografia clássica"
+                    loading="lazy">
                 </figure>
 
                 <div class="blog-content">
@@ -734,7 +705,8 @@
                   <h3 class="h3 blog-item-title">Computação quântica: desafiando a criptografia clássica</h3>
 
                   <p class="blog-text">
-                    Computação quântica ameaça criptografia; soluções incluem criptografia pós-quântica e inteligência artificial.
+                    Computação quântica ameaça criptografia; soluções incluem criptografia pós-quântica e inteligência
+                    artificial.
                   </p>
 
                 </div>
@@ -746,7 +718,8 @@
               <a href="https://tiinside.com.br/22/07/2024/cybersecurity-em-tempos-de-inteligencia-artificial/">
 
                 <figure class="blog-banner-box">
-                  <img src="./assets/images/blog_2.webp" alt="Cybersecurity em tempos de Inteligência Artificial" loading="lazy">
+                  <img src="/assets/img/blog_2.webp" alt="Cybersecurity em tempos de Inteligência Artificial"
+                    loading="lazy">
                 </figure>
 
                 <div class="blog-content">
@@ -762,7 +735,8 @@
                   <h3 class="h3 blog-item-title">Cybersecurity em tempos de Inteligência Artificial</h3>
 
                   <p class="blog-text">
-                    Inteligência Artificial em segurança cibernética: tendências, ética, proteção e privacidade discutidas.
+                    Inteligência Artificial em segurança cibernética: tendências, ética, proteção e privacidade
+                    discutidas.
                   </p>
 
                 </div>
@@ -771,10 +745,13 @@
             </li>
 
             <li class="blog-post-item">
-              <a href="https://g1.globo.com/tecnologia/noticia/2024/04/12/meta-e-google-revelam-nova-geracao-de-chip-de-inteligencia-artificial-para-empresas.ghtml">
+              <a
+                href="https://g1.globo.com/tecnologia/noticia/2024/04/12/meta-e-google-revelam-nova-geracao-de-chip-de-inteligencia-artificial-para-empresas.ghtml">
 
                 <figure class="blog-banner-box">
-                  <img src="./assets/images/blog_3.jpg" alt="Meta e Google revelam nova geração de chip de inteligência artificial para empresas" loading="lazy">
+                  <img src="/assets/img/blog_3.jpg"
+                    alt="Meta e Google revelam nova geração de chip de inteligência artificial para empresas"
+                    loading="lazy">
                 </figure>
 
                 <div class="blog-content">
@@ -787,7 +764,8 @@
                     <time datetime="2022-02-23">12 de maio, 2024</time>
                   </div>
 
-                  <h3 class="h3 blog-item-title">Meta e Google revelam nova geração de chip de inteligência artificial para empresas</h3>
+                  <h3 class="h3 blog-item-title">Meta e Google revelam nova geração de chip de inteligência artificial
+                    para empresas</h3>
 
                   <p class="blog-text">
                     Processadores concorrem com semicondutores de IA de Intel, Nvidia, Amazon, Microsoft.
@@ -799,10 +777,12 @@
             </li>
 
             <li class="blog-post-item">
-              <a href="https://www.cnnbrasil.com.br/internacional/crise-cibernetica-global-prejudica-voos-midia-financas-e-telecomunicacoes/">
+              <a
+                href="https://www.cnnbrasil.com.br/internacional/crise-cibernetica-global-prejudica-voos-midia-financas-e-telecomunicacoes/">
 
                 <figure class="blog-banner-box">
-                  <img src="./assets/images/blog_4.webp" alt="Apagão cibernético global paralisa voos e afeta TVs, bancos e hospitais" loading="lazy">
+                  <img src="/assets/img/blog_4.webp"
+                    alt="Apagão cibernético global paralisa voos e afeta TVs, bancos e hospitais" loading="lazy">
                 </figure>
 
                 <div class="blog-content">
@@ -815,10 +795,12 @@
                     <time datetime="2022-02-23">19 de julho, 2024</time>
                   </div>
 
-                  <h3 class="h3 blog-item-title">Apagão cibernético global paralisa voos e afeta TVs, bancos e hospitais</h3>
+                  <h3 class="h3 blog-item-title">Apagão cibernético global paralisa voos e afeta TVs, bancos e hospitais
+                  </h3>
 
                   <p class="blog-text">
-                    Falha generalizada começou após mau funcionamento de um antivírus corporativo usado em grandes estruturas digitais
+                    Falha generalizada começou após mau funcionamento de um antivírus corporativo usado em grandes
+                    estruturas digitais
                   </p>
 
                 </div>
@@ -826,7 +808,7 @@
               </a>
             </li>
 
-          
+
           </ul>
 
         </section>
@@ -880,10 +862,9 @@
 
   </main>
 
-  <script src="./assets/js/script.js"></script>
+  <script src="assets/js/script.js"></script>
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
 </body>
-
 </html>
