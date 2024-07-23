@@ -13,12 +13,12 @@
   ), hsl(240, 2%, 13%);
   --bg-gradient-yellow-1: linear-gradient(
     to bottom right, 
-    hsl(45, 100%, 71%) 0%, 
+    hsl(217, 98%, 59%), 
     hsla(36, 100%, 69%, 0) 50%
   );
   --bg-gradient-yellow-2: linear-gradient(
     135deg, 
-    hsla(45, 100%, 71%, 0.251) 0%, 
+    hsla(217, 98%, 59%, 0.441), 
     hsla(35, 100%, 68%, 0) 59.86%
   ), hsl(240, 2%, 13%);
   --border-gradient-onyx: linear-gradient(
@@ -32,7 +32,7 @@
     hsl(241, 98%, 59%)
   );
 
-  /* solid */
+
 
   --jet: hsl(0, 0%, 22%);
   --onyx: hsl(240, 1%, 17%);
@@ -47,14 +47,7 @@
   --light-gray-70: hsla(0, 0%, 84%, 0.7);
   --bittersweet-shimmer: hsl(0, 43%, 51%);
 
-  /**
-   * typography
-   */
-
-  /* font-family */
   --ff-poppins: 'Poppins', sans-serif;
-
-  /* font-size */
   --fs-1: 24px;
   --fs-2: 18px;
   --fs-3: 17px;
@@ -64,15 +57,11 @@
   --fs-7: 13px;
   --fs-8: 11px;
 
-  /* font-weight */
+
   --fw-300: 300;
   --fw-400: 400;
   --fw-500: 500;
   --fw-600: 600;
-
-  /**
-   * shadow
-   */
   
   --shadow-1: -4px 8px 24px hsla(0, 0%, 0%, 0.25);
   --shadow-2: 0 16px 30px hsla(0, 0%, 0%, 0.25);
@@ -80,22 +69,10 @@
   --shadow-4: 0 25px 50px hsla(0, 0%, 0%, 0.15);
   --shadow-5: 0 24px 80px hsla(0, 0%, 0%, 0.25);
 
-  /**
-   * transition
-   */
-
   --transition-1: 0.25s ease;
   --transition-2: 0.5s ease-in-out;
 
 }
-
-
-
-
-
-/*-----------------------------------*\
-  #RESET
-\*-----------------------------------*/
 
 *, *::before, *::after {
   margin: 0;
@@ -135,13 +112,6 @@ html { font-family: var(--ff-poppins); }
 
 body { background: var(--smoky-black); }
 
-
-
-
-
-/*-----------------------------------*\
-  #REUSED STYLE
-\*-----------------------------------*/
 
 .sidebar,
 article {
@@ -235,7 +205,7 @@ article.active {
 
 .has-scrollbar::-webkit-scrollbar {
   width: 5px; /* for vertical scrollbar */
-  height: 5px; /* for horizontal scrollbar */
+  height: 5px; 
 }
 
 .has-scrollbar::-webkit-scrollbar-track {
