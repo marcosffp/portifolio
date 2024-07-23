@@ -1,44 +1,37 @@
-# vCard - Personal portfolio
+# Personal portfolio
 
-![GitHub repo size](https://img.shields.io/github/repo-size/codewithsadee/vcard-personal-portfolio)
-![GitHub stars](https://img.shields.io/github/stars/codewithsadee/vcard-personal-portfolio?style=social)
-![GitHub forks](https://img.shields.io/github/forks/codewithsadee/vcard-personal-portfolio?style=social)
-[![Twitter Follow](https://img.shields.io/twitter/follow/codewithsadee_?style=social)](https://twitter.com/intent/follow?screen_name=codewithsadee_)
-[![YouTube Video Views](https://img.shields.io/youtube/views/SoxmIlgf2zM?style=social)](https://youtu.be/SoxmIlgf2zM)
+Um site de portfólio pessoal totalmente responsivo, responsivo para todos os dispositivos, construído usando HTML, CSS e JavaScript.
 
-vCard is a fully responsive personal portfolio website, responsive for all devices, built using HTML, CSS, and JavaScript.
+## Home
 
-## Demo
+![homepage](https://github.com/user-attachments/assets/e60429f6-f1b8-4baa-8f2f-638667cef679)
 
-![vCard Desktop Demo](./website-demo-image/desktop.png "Desktop Demo")
-![vCard Mobile Demo](./website-demo-image/mobile.png "Mobile Demo")
+## Pré-requisitos
 
-## Prerequisites
+Antes de começar, certifique-se de atender aos seguintes requisitos:
 
-Before you begin, ensure you have met the following requirements:
+* [Git](https://git-scm.com/downloads "Download Git")  deve ser instalado em seu sistema operacional.
 
-* [Git](https://git-scm.com/downloads "Download Git") must be installed on your operating system.
+## Instalando
 
-## Installing vCard
-
-To install **vCard**, follow these steps:
+Para instalar o **Portfolio**, siga estas etapas:
 
 Linux and macOS:
 
 ```bash
-sudo git clone https://github.com/codewithsadee/vcard-personal-portfolio.git
+sudo git clone https://github.com/marcosffp/portifolio.git
 ```
 
 Windows:
 
 ```bash
-git clone https://github.com/codewithsadee/vcard-personal-portfolio.git
+git clone https://github.com/marcosffp/portifolio.git
 ```
 
-## Contact
+## Contato
 
-If you want to contact me you can reach me at [Twitter](https://www.twitter.com/codewithsadee).
+Se você quiser entrar em contato comigo, pode entrar em contato comigo em [Instagram](https://www.instagram.com/marcos.fkp).
 
-## License
+## Licença
 
 MIT
