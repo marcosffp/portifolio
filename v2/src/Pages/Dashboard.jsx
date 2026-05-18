@@ -2,9 +2,9 @@
 import { Routes, Route, Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { supabase } from '../supabase'
 import Projects from './dashboard/Projects'
-import Certificates from './dashboard/Certificates'
+import Trajectory from './dashboard/Trajectory'
 import Comments from './dashboard/Comments'
-import { FolderGit2, Award, MessageSquare, LogOut, LayoutDashboard, Menu } from 'lucide-react'
+import { FolderGit2, MapPin, MessageSquare, LogOut, LayoutDashboard, Menu } from 'lucide-react'
 import { useTranslation } from '../contexts/LanguageContext'
 import LanguageToggle from '../components/LanguageToggle'
 
@@ -17,7 +17,7 @@ export default function Dashboard() {
 
   const NAV_ITEMS = [
     { to: 'projects', label: td.projects, icon: FolderGit2 },
-    { to: 'certificates', label: td.certificates, icon: Award },
+    { to: 'trajectory', label: td.trajectory, icon: MapPin },
     { to: 'comments', label: td.comments, icon: MessageSquare },
   ]
 
@@ -135,7 +135,7 @@ export default function Dashboard() {
           <Routes>
             <Route index element={<Navigate to="projects" replace />} />
             <Route path="projects" element={<Projects />} />
-            <Route path="certificates" element={<Certificates />} />
+            <Route path="trajectory" element={<Trajectory />} />
             <Route path="comments" element={<Comments />} />
           </Routes>
         </main>

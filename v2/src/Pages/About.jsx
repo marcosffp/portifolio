@@ -1,5 +1,5 @@
 import React, { useEffect, memo, useMemo } from "react"
-import { FileText, Code, Award, Globe, ArrowUpRight, Sparkles } from "lucide-react"
+import { FileText, Code, Milestone, Globe, ArrowUpRight, Sparkles } from "lucide-react"
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import { useTranslation } from "../contexts/LanguageContext"
@@ -107,9 +107,9 @@ const StatCard = memo(({ icon: Icon, color, value, label, description, animation
 const AboutPage = () => {
   const { t, language } = useTranslation();
 
-  const { totalProjects, totalCertificates, YearExperience } = useMemo(() => {
+  const { totalProjects, totalMilestones, YearExperience } = useMemo(() => {
     const storedProjects = JSON.parse(localStorage.getItem("projects") || "[]");
-    const storedCertificates = JSON.parse(localStorage.getItem("certificates") || "[]");
+    const storedTrajectory = JSON.parse(localStorage.getItem("trajectory") || "[]");
 
     const startDate = new Date("2021-11-06");
     const today = new Date();
@@ -118,7 +118,7 @@ const AboutPage = () => {
 
     return {
       totalProjects: storedProjects.length,
-      totalCertificates: storedCertificates.length,
+      totalMilestones: storedTrajectory.length,
       YearExperience: experience
     };
   }, []);
@@ -148,11 +148,11 @@ const AboutPage = () => {
       animation: "fade-right",
     },
     {
-      icon: Award,
+      icon: Milestone,
       color: "from-secondary to-primary",
-      value: totalCertificates,
-      label: t.about.certificates,
-      description: t.about.certificatesDesc,
+      value: totalMilestones,
+      label: t.about.trajectory,
+      description: t.about.trajectoryDesc,
       animation: "fade-up",
     },
     {
@@ -163,7 +163,7 @@ const AboutPage = () => {
       description: t.about.experienceDesc,
       animation: "fade-left",
     },
-  ], [totalProjects, totalCertificates, YearExperience, language]);
+  ], [totalProjects, totalMilestones, YearExperience, language]);
 
   return (
     <div

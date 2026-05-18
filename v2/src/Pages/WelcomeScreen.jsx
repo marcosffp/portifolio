@@ -4,6 +4,7 @@ import { Code2, Github, Globe, User } from 'lucide-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import LanguageToggle from '../components/LanguageToggle';
+import { useTranslation } from '../contexts/LanguageContext';
 
 const TypewriterEffect = ({ text }) => {
   const [displayText, setDisplayText] = useState('');
@@ -48,6 +49,7 @@ const IconButton = ({ Icon }) => (
 
 const WelcomeScreen = ({ onLoadingComplete }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     AOS.init({
@@ -119,29 +121,34 @@ const WelcomeScreen = ({ onLoadingComplete }) => {
               </motion.div>
 
               {/* Welcome Text */}
-              <motion.div 
+              <motion.div
                 className="text-center mb-6 sm:mb-8 md:mb-12"
                 variants={childVariants}
               >
                 <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold space-y-2 sm:space-y-4">
                   <div className="mb-2 sm:mb-4">
-                    <span data-aos="fade-right" data-aos-delay="200" className="inline-block px-2 bg-gradient-to-r from-white via-blue-100 to-blue-200 bg-clip-text text-transparent">
-                      Welcome
-                    </span>{' '}
-                    <span data-aos="fade-right" data-aos-delay="400" className="inline-block px-2 bg-gradient-to-r from-white via-blue-100 to-blue-200 bg-clip-text text-transparent">
-                      To
-                    </span>{' '}
-                    <span data-aos="fade-right" data-aos-delay="600" className="inline-block px-2 bg-gradient-to-r from-white via-blue-100 to-blue-200 bg-clip-text text-transparent">
-                      My
-                    </span>
+                    {t.welcome.words1.map((word, i) => (
+                      <span
+                        key={i}
+                        data-aos="fade-right"
+                        data-aos-delay={(i + 1) * 200}
+                        className="inline-block px-2 bg-gradient-to-r from-white via-blue-100 to-blue-200 bg-clip-text text-transparent"
+                      >
+                        {word}
+                      </span>
+                    ))}
                   </div>
                   <div>
-                    <span data-aos="fade-up" data-aos-delay="800" className="inline-block px-2 bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
-                      Portfolio
-                    </span>{' '}
-                    <span data-aos="fade-up" data-aos-delay="1000" className="inline-block px-2 bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
-                      Website
-                    </span>
+                    {t.welcome.words2.map((word, i) => (
+                      <span
+                        key={i}
+                        data-aos="fade-up"
+                        data-aos-delay={800 + i * 200}
+                        className="inline-block px-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
+                      >
+                        {word}
+                      </span>
+                    ))}
                   </div>
                 </h1>
               </motion.div>
