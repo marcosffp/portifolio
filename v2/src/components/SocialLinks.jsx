@@ -1,54 +1,49 @@
 import { useEffect } from "react";
-import {
-  Linkedin,
-  Github,
-  Instagram,
-  ExternalLink,
-} from "lucide-react";
+import { Linkedin, Github, Instagram, ExternalLink } from "lucide-react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import PresenceWidget from "./PresenceWidget";
-
-const socialLinks = [
-  {
-    name: "LinkedIn",
-    displayName: "Let's Connect",
-    subText: "on LinkedIn",
-    icon: Linkedin,
-    url: "https://www.linkedin.com/in/marcosfkp/",
-    color: "#0A66C2",
-    gradient: "from-[#0A66C2] to-[#0077B5]",
-    isPrimary: true,
-  },
-  {
-    name: "Instagram",
-    displayName: "Instagram",
-    subText: "@marcosfkp",
-    icon: Instagram,
-    url: "https://www.instagram.com/marcosfkp/?hl=id",
-    color: "#E4405F",
-    gradient: "from-[#833AB4] via-[#E4405F] to-[#FCAF45]",
-  },
-  {
-    name: "GitHub",
-    displayName: "Github",
-    subText: "@marcosffp",
-    icon: Github,
-    url: "https://github.com/marcosffp",
-    color: "#ffffff",
-    gradient: "from-[#333] to-[#24292e]",
-  },
-];
+import { useTranslation } from "../contexts/LanguageContext";
 
 const SocialLinks = () => {
+  const { t } = useTranslation();
+
+  const socialLinks = [
+    {
+      name: "LinkedIn",
+      displayName: t.socialLinks.letsConnect,
+      subText: t.socialLinks.onLinkedIn,
+      icon: Linkedin,
+      url: "https://www.linkedin.com/in/marcosfkp/",
+      color: "#0A66C2",
+      gradient: "from-[#0A66C2] to-[#0077B5]",
+      isPrimary: true,
+    },
+    {
+      name: "Instagram",
+      displayName: "Instagram",
+      subText: "@marcosfkp",
+      icon: Instagram,
+      url: "https://www.instagram.com/marcosfkp/?hl=id",
+      color: "#E4405F",
+      gradient: "from-[#833AB4] via-[#E4405F] to-[#FCAF45]",
+    },
+    {
+      name: "GitHub",
+      displayName: "Github",
+      subText: "@marcosffp",
+      icon: Github,
+      url: "https://github.com/marcosffp",
+      color: "#ffffff",
+      gradient: "from-[#333] to-[#24292e]",
+    },
+  ];
+
   const linkedIn = socialLinks.find((link) => link.isPrimary);
   const otherLinks = socialLinks.filter((link) => !link.isPrimary);
   const [instagram, github] = otherLinks;
 
   useEffect(() => {
-    AOS.init({
-      offset: 10,
-    });
+    AOS.init({ offset: 10 });
   }, []);
 
   return (
@@ -57,8 +52,8 @@ const SocialLinks = () => {
         className="text-xl font-semibold text-white mb-6 flex items-center gap-2"
         data-aos="fade-down"
       >
-        <span className="inline-block w-8 h-1 bg-indigo-500 rounded-full"></span>
-        Connect With Me
+        <span className="inline-block w-8 h-1 bg-primary rounded-full"></span>
+        {t.socialLinks.title}
       </h3>
 
       <div className="flex flex-col gap-4">
@@ -67,21 +62,18 @@ const SocialLinks = () => {
           href={linkedIn.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="group relative flex items-center justify-between p-4 rounded-lg 
+          className="group relative flex items-center justify-between p-4 rounded-lg
                      bg-white/5 border border-white/10 overflow-hidden
                      hover:border-white/20 transition-all duration-500"
           data-aos="fade-up"
           data-aos-delay="100"
         >
-          {/* Hover Gradient Background */}
           <div
             className={`absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500
                        bg-gradient-to-r ${linkedIn.gradient}`}
           />
 
-          {/* Content Container */}
           <div className="relative flex items-center gap-4">
-            {/* Icon Container */}
             <div className="relative flex items-center justify-center">
               <div
                 className="absolute inset-0 opacity-20 rounded-md transition-all duration-500
@@ -96,7 +88,6 @@ const SocialLinks = () => {
               </div>
             </div>
 
-            {/* Text Container */}
             <div className="flex flex-col">
               <span className="text-lg font-bold pt-[0.2rem] text-gray-200 tracking-tight leading-none group-hover:text-white transition-colors duration-300">
                 {linkedIn.displayName}
@@ -107,14 +98,12 @@ const SocialLinks = () => {
             </div>
           </div>
 
-          {/* External Link */}
           <ExternalLink
             className="relative w-5 h-5 text-gray-500 group-hover:text-white
                        opacity-0 group-hover:opacity-100 transition-all duration-300
                        transform group-hover:translate-x-0 -translate-x-1"
           />
 
-          {/* Shine Effect */}
           <div className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none overflow-hidden">
             <div
               className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent
@@ -131,7 +120,7 @@ const SocialLinks = () => {
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative flex items-center gap-3 p-4 rounded-xl 
+              className="group relative flex items-center gap-3 p-4 rounded-xl
                                bg-white/5 border border-white/10 overflow-hidden
                                hover:border-white/20 transition-all duration-500"
               data-aos="fade-up"
@@ -156,7 +145,6 @@ const SocialLinks = () => {
                 </div>
               </div>
 
-              {/* Text Container */}
               <div className="flex flex-col min-w-0">
                 <span className="text-sm font-bold text-gray-200 group-hover:text-white transition-colors duration-300">
                   {link.displayName}

@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import { supabase } from "../../supabase";
 import { Award, Upload, Trash2, ImageIcon, Plus } from 'lucide-react'
 import { useTranslation } from '../../contexts/LanguageContext'
 
 const Card = ({ children, className = '' }) => (
   <div className={`relative group ${className}`}>
-    <div className="absolute -inset-0.5 bg-gradient-to-r from-[#6366f1] to-[#a855f7] rounded-2xl blur opacity-10 group-hover:opacity-25 transition duration-500" />
+    <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-secondary rounded-2xl blur opacity-10 group-hover:opacity-25 transition duration-500" />
     <div className="relative bg-white/5 backdrop-blur-xl border border-white/12 rounded-2xl h-full">
       {children}
     </div>
@@ -14,7 +14,7 @@ const Card = ({ children, className = '' }) => (
 
 const SkeletonCard = () => (
   <div className="relative">
-    <div className="absolute -inset-0.5 bg-gradient-to-r from-[#6366f1] to-[#a855f7] rounded-2xl blur opacity-10" />
+    <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-secondary rounded-2xl blur opacity-10" />
     <div className="relative bg-white/5 border border-white/12 rounded-2xl overflow-hidden">
       <div className="w-full aspect-[16/11.5] bg-white/5 animate-pulse" />
     </div>
@@ -26,7 +26,7 @@ const CertCard = ({ cert, onDelete }) => {
 
   return (
     <div className="relative group">
-      <div className="absolute -inset-0.5 bg-gradient-to-r from-[#6366f1] to-[#a855f7] rounded-2xl blur opacity-10 group-hover:opacity-30 transition duration-500" />
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-secondary rounded-2xl blur opacity-10 group-hover:opacity-30 transition duration-500" />
       <div className="relative bg-white/5 border border-white/12 rounded-2xl overflow-hidden">
         {/* Skeleton shown until image loads */}
         {!imgLoaded && (
@@ -100,8 +100,8 @@ export default function Certificates() {
       {/* Header */}
       <div className="flex items-center gap-3">
         <div className="relative">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-[#6366f1] to-[#a855f7] rounded-xl blur opacity-50" />
-          <div className="relative w-9 h-9 bg-[#030014] rounded-xl border border-white/15 flex items-center justify-center">
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-secondary rounded-xl blur opacity-50" />
+          <div className="relative w-9 h-9 bg-canvas rounded-xl border border-white/15 flex items-center justify-center">
             <Award className="w-4 h-4 text-indigo-400" />
           </div>
         </div>
@@ -151,8 +151,8 @@ export default function Certificates() {
                   {td.clear}
                 </button>
                 <button onClick={uploadImage} disabled={uploading} className="relative group/u">
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-[#4f52c9] to-[#8644c5] rounded-xl opacity-60 blur group-hover/u:opacity-100 transition duration-300" />
-                  <div className="relative flex items-center gap-2 px-4 py-1.5 bg-[#030014] rounded-xl border border-white/10">
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-dark to-secondary-dark rounded-xl opacity-60 blur group-hover/u:opacity-100 transition duration-300" />
+                  <div className="relative flex items-center gap-2 px-4 py-1.5 bg-canvas rounded-xl border border-white/10">
                     {uploading ? <div className="w-3.5 h-3.5 border-2 border-white/20 border-t-white rounded-full animate-spin" /> : <Upload className="w-3.5 h-3.5 text-indigo-400" />}
                     <span className="text-xs text-gray-200">{uploading ? td.uploading : td.upload}</span>
                   </div>

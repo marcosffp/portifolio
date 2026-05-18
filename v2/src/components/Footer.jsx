@@ -1,4 +1,7 @@
+import { useTranslation } from "../contexts/LanguageContext";
+
 const Footer = () => {
+  const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -10,7 +13,7 @@ const Footer = () => {
           <a href="https://marcosfkp.com" className="hover:underline">
             MarcosFkp™
           </a>
-          . All Rights Reserved.
+          . {t.footer.allRightsReserved}
         </span>
       </center>
     </footer>

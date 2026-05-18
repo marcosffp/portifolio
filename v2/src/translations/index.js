@@ -101,6 +101,14 @@ export const translations = {
       keyFeatures: 'Funcionalidades Principais',
       noFeatures: 'Nenhuma funcionalidade adicionada.',
     },
+    socialLinks: {
+      title: 'Conecte-se Comigo',
+      letsConnect: 'Vamos Conectar',
+      onLinkedIn: 'no LinkedIn',
+    },
+    footer: {
+      allRightsReserved: 'Todos os Direitos Reservados.',
+    },
     login: {
       adminPortal: 'Portal Admin',
       welcomeBack: 'Bem-vindo de volta',
@@ -280,6 +288,14 @@ export const translations = {
       noTech: 'No technologies added.',
       keyFeatures: 'Key Features',
       noFeatures: 'No features added.',
+    },
+    socialLinks: {
+      title: 'Connect With Me',
+      letsConnect: "Let's Connect",
+      onLinkedIn: 'on LinkedIn',
+    },
+    footer: {
+      allRightsReserved: 'All Rights Reserved.',
     },
     login: {
       adminPortal: 'Admin Portal',

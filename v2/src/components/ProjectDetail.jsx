@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "../contexts/LanguageContext";
@@ -65,7 +65,7 @@ const ProjectStats = ({ project, labels }) => {
   const featuresCount = project?.Features?.length || 0;
 
   return (
-    <div className="grid grid-cols-2 gap-3 md:gap-4 p-3 md:p-4 bg-[#0a0a1a] rounded-xl overflow-hidden relative">
+    <div className="grid grid-cols-2 gap-3 md:gap-4 p-3 md:p-4 bg-canvas-alt rounded-xl overflow-hidden relative">
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-purple-900/20 opacity-50 blur-2xl z-0" />
       <div className="relative z-10 flex items-center space-x-2 md:space-x-3 bg-white/5 p-2 md:p-3 rounded-lg border border-blue-500/20 transition-all duration-300 hover:scale-105 hover:border-blue-500/50 hover:shadow-lg">
         <div className="bg-blue-500/20 p-1.5 md:p-2 rounded-full">
@@ -119,7 +119,7 @@ const ProjectDetails = () => {
         text: t.projectDetail.privateText,
         confirmButtonText: t.projectDetail.understand,
         confirmButtonColor: "#3085d6",
-        background: "#030014",
+        background: "var(--color-canvas)",
         color: "#ffffff",
       });
       return false;
@@ -148,7 +148,7 @@ const ProjectDetails = () => {
 
   if (!project) {
     return (
-      <div className="min-h-screen bg-[#030014] flex items-center justify-center">
+      <div className="min-h-screen bg-canvas flex items-center justify-center">
         <LanguageToggle floating />
         <div className="text-center space-y-6 animate-fadeIn">
           <div className="w-16 h-16 md:w-24 md:h-24 mx-auto border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
@@ -168,20 +168,20 @@ const ProjectDetails = () => {
   return (
     <>
       <Helmet>
-        <title>{project.Title} — Marcos Alberto Ferreira</title>
+        <title>{project.Title} â€” Marcos Alberto Ferreira</title>
         <meta
           name="description"
           content={
             project.Description
               ? project.Description.slice(0, 155)
-              : `Project ${project.Title} oleh Marcos Alberto Ferreira — Frontend Web Developer.`
+              : `Project ${project.Title} oleh Marcos Alberto Ferreira â€” Frontend Web Developer.`
           }
         />
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href={projectUrl} />
         <meta
           property="og:title"
-          content={`${project.Title} — Marcos Alberto Ferreira`}
+          content={`${project.Title} â€” Marcos Alberto Ferreira`}
         />
         <meta
           property="og:description"
@@ -207,7 +207,7 @@ const ProjectDetails = () => {
       </Helmet>
 
       <LanguageToggle floating />
-      <div className="min-h-screen bg-[#030014] px-[2%] sm:px-0 relative overflow-hidden">
+      <div className="min-h-screen bg-canvas px-[2%] sm:px-0 relative overflow-hidden">
         <div className="fixed inset-0">
           <div className="absolute -inset-[10px] opacity-20">
             <div className="absolute top-0 -left-4 w-72 md:w-96 h-72 md:h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob" />
@@ -302,7 +302,7 @@ const ProjectDetails = () => {
 
               <div className="space-y-6 md:space-y-10 animate-slideInRight">
                 <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl group">
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#030014] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-canvas via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <img
                     src={project.Img}
                     alt={project.Title}

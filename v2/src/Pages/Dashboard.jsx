@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Routes, Route, Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { supabase } from '../supabase'
 import Projects from './dashboard/Projects'
@@ -31,8 +31,8 @@ export default function Dashboard() {
       {/* Logo */}
       <div className="flex items-center gap-3 px-1 shrink-0">
         <div className="relative">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-[#6366f1] to-[#a855f7] rounded-xl blur opacity-50" />
-          <div className="relative w-9 h-9 bg-[#030014] rounded-xl border border-white/15 flex items-center justify-center">
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-secondary rounded-xl blur opacity-50" />
+          <div className="relative w-9 h-9 bg-canvas rounded-xl border border-white/15 flex items-center justify-center">
             <LayoutDashboard className="w-4 h-4 text-indigo-400" />
           </div>
         </div>
@@ -108,7 +108,7 @@ export default function Dashboard() {
 
       {/* Sidebar - mobile drawer */}
       <aside
-        className={`fixed inset-y-0 left-0 z-30 w-60 flex flex-col border-r border-white/8 bg-[#0a0a1a] backdrop-blur-xl transition-transform duration-300 lg:hidden ${
+        className={`fixed inset-y-0 left-0 z-30 w-60 flex flex-col border-r border-white/8 bg-canvas-alt backdrop-blur-xl transition-transform duration-300 lg:hidden ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >

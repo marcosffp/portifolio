@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+﻿import { useEffect, useState, useMemo } from "react";
 import { supabase } from "../../supabase";
 import { useTranslation } from "../../contexts/LanguageContext";
 import {
@@ -17,7 +17,7 @@ const PAGE_SIZE = 10;
 
 const Card = ({ children, className = "" }) => (
   <div className={`relative group ${className}`}>
-    <div className="absolute -inset-0.5 bg-gradient-to-r from-[#6366f1] to-[#a855f7] rounded-2xl blur opacity-10 group-hover:opacity-20 transition duration-500 pointer-events-none" />
+    <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-secondary rounded-2xl blur opacity-10 group-hover:opacity-20 transition duration-500 pointer-events-none" />
     <div className="relative bg-white/5 backdrop-blur-xl border border-white/12 rounded-2xl h-full">
       {children}
     </div>
@@ -103,8 +103,8 @@ export default function Comments() {
       <div className="flex items-start sm:items-center justify-between gap-4 flex-wrap">
         <div className="flex items-center gap-3">
           <div className="relative">
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-[#6366f1] to-[#a855f7] rounded-xl blur opacity-50 pointer-events-none" />
-            <div className="relative w-9 h-9 bg-[#030014] rounded-xl border border-white/15 flex items-center justify-center">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-secondary rounded-xl blur opacity-50 pointer-events-none" />
+            <div className="relative w-9 h-9 bg-canvas rounded-xl border border-white/15 flex items-center justify-center">
               <MessageSquare className="w-4 h-4 text-indigo-400" />
             </div>
           </div>
@@ -113,7 +113,7 @@ export default function Comments() {
               {td.comments}
             </h1>
             <p className="text-gray-500 text-xs">
-              {comments.length} total · {pinnedCount} {td.pinned.toLowerCase()}
+              {comments.length} total Â· {pinnedCount} {td.pinned.toLowerCase()}
             </p>
           </div>
         </div>
@@ -217,7 +217,7 @@ export default function Comments() {
           {paginated.map((comment) => (
             <div key={comment.id} className="relative group">
               {comment.is_pinned && (
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-[#6366f1] to-[#a855f7] rounded-2xl blur opacity-15 pointer-events-none" />
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-secondary rounded-2xl blur opacity-15 pointer-events-none" />
               )}
               <div
                 className={`relative bg-white/5 backdrop-blur-xl border rounded-2xl px-4 py-4 sm:px-5 transition-all duration-200 ${
@@ -296,7 +296,7 @@ export default function Comments() {
       {totalPages > 1 && (
         <div className="flex items-center justify-between gap-3 pt-2">
           <p className="text-xs text-gray-500">
-            Showing {(page - 1) * PAGE_SIZE + 1}–
+            Showing {(page - 1) * PAGE_SIZE + 1}â€“
             {Math.min(page * PAGE_SIZE, filtered.length)} of {filtered.length}
           </p>
           <div className="flex items-center gap-1">
@@ -324,7 +324,7 @@ export default function Comments() {
                     key={`dots-${i}`}
                     className="px-2 text-gray-600 text-xs"
                   >
-                    …
+                    â€¦
                   </span>
                 ) : (
                   <button
