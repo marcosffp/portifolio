@@ -12,6 +12,8 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  // const [resetLoading, setResetLoading] = useState(false)
+  // const [resetMessage, setResetMessage] = useState(null)
   const navigate = useNavigate()
 
   const handleLogin = async (e) => {
@@ -31,6 +33,24 @@ export default function Login() {
     }
     navigate('/dashboard')
   }
+
+  // const handleForgotPassword = async () => {
+  //   if (!email) {
+  //     setResetMessage({ type: 'error', text: tl.forgotEmailRequired })
+  //     return
+  //   }
+  //   setResetLoading(true)
+  //   setResetMessage(null)
+  //   const { error } = await supabase.auth.resetPasswordForEmail(email, {
+  //     redirectTo: `${window.location.origin}/reset-password`,
+  //   })
+  //   setResetLoading(false)
+  //   setResetMessage(
+  //     error
+  //       ? { type: 'error', text: error.message }
+  //       : { type: 'success', text: tl.forgotEmailSent }
+  //   )
+  // }
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
@@ -87,7 +107,23 @@ export default function Login() {
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
+                {/* <div className="flex justify-end">
+                  <button
+                    type="button"
+                    onClick={handleForgotPassword}
+                    disabled={resetLoading}
+                    className="text-xs text-gray-400 hover:text-primary transition-colors"
+                  >
+                    {resetLoading ? tl.forgotSending : tl.forgotPassword}
+                  </button>
+                </div> */}
               </div>
+
+              {/* {resetMessage && (
+                <p className={`text-xs ${resetMessage.type === 'error' ? 'text-red-400' : 'text-emerald-400'}`}>
+                  {resetMessage.text}
+                </p>
+              )} */}
 
               <button type="submit" disabled={loading} className="relative group/btn w-full mt-1">
                 <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-dark to-secondary-dark rounded-xl opacity-70 blur group-hover/btn:opacity-100 transition duration-300" />

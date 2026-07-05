@@ -333,8 +333,13 @@ const Komentar = () => {
         setIsSubmitting(true);
         
         try {
-            const profileImageUrl = await uploadImage(imageFile);
-            
+            let profileImageUrl = null;
+            try {
+                profileImageUrl = await uploadImage(imageFile);
+            } catch (uploadErr) {
+                console.error('Error uploading profile image, posting comment without it: ', uploadErr);
+            }
+
             const { error } = await supabase
                 .from('portfolio_comments')
                 .insert([

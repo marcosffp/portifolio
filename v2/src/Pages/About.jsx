@@ -1,8 +1,35 @@
-import React, { useEffect, memo, useMemo } from "react"
+import React, { useEffect, useState, memo, useMemo } from "react"
 import { FileText, Code, Milestone, Globe, ArrowUpRight, Sparkles } from "lucide-react"
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import { useTranslation } from "../contexts/LanguageContext"
+import { supabase } from "../supabase"
+
+const FALLBACK_CV_URL = "https://drive.google.com/drive/folders/1BOm51Grsabb3zj6Xk27K-iRwI1zITcpo";
+
+function parseMonthYear(str) {
+  if (!str) return null;
+  const [month, year] = str.split('/').map(Number);
+  if (!month || !year) return null;
+  return new Date(year, month - 1, 1);
+}
+
+function computeExperienceYears(trajectoryItems) {
+  const workStartDates = trajectoryItems
+    .filter((item) => item.type === 'work')
+    .map((item) => parseMonthYear(item.start_date))
+    .filter(Boolean);
+  if (workStartDates.length === 0) return 0;
+
+  const earliest = new Date(Math.min(...workStartDates.map((d) => d.getTime())));
+  const today = new Date();
+  let years = today.getFullYear() - earliest.getFullYear();
+  const hadAnniversaryThisYear =
+    today.getMonth() > earliest.getMonth() ||
+    (today.getMonth() === earliest.getMonth() && today.getDate() >= earliest.getDate());
+  if (!hadAnniversaryThisYear) years -= 1;
+  return Math.max(years, 0);
+}
 
 const Header = memo(({ title, subtitle }) => (
   <div className="text-center lg:mb-8 mb-2 px-[5%]">
@@ -107,20 +134,30 @@ const StatCard = memo(({ icon: Icon, color, value, label, description, animation
 const AboutPage = () => {
   const { t, language } = useTranslation();
 
-  const { totalProjects, totalMilestones, YearExperience } = useMemo(() => {
-    const storedProjects = JSON.parse(localStorage.getItem("projects") || "[]");
-    const storedTrajectory = JSON.parse(localStorage.getItem("trajectory") || "[]");
+  const [{ totalProjects, totalMilestones, YearExperience }, setStats] = useState({
+    totalProjects: 0,
+    totalMilestones: 0,
+    YearExperience: 0,
+  });
+  const [cvUrl, setCvUrl] = useState(FALLBACK_CV_URL);
 
-    const startDate = new Date("2021-11-06");
-    const today = new Date();
-    const experience = today.getFullYear() - startDate.getFullYear() -
-      (today < new Date(today.getFullYear(), startDate.getMonth(), startDate.getDate()) ? 1 : 0);
-
-    return {
-      totalProjects: storedProjects.length,
-      totalMilestones: storedTrajectory.length,
-      YearExperience: experience
-    };
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const [{ count: projectsCount }, { data: trajectoryItems }, { data: settings }] = await Promise.all([
+        supabase.from("projects").select("id", { count: "exact", head: true }),
+        supabase.from("trajectory").select("type, start_date"),
+        supabase.from("settings").select("cv_url").eq("id", 1).maybeSingle(),
+      ]);
+      if (cancelled) return;
+      setStats({
+        totalProjects: projectsCount || 0,
+        totalMilestones: trajectoryItems?.length || 0,
+        YearExperience: computeExperienceYears(trajectoryItems || []),
+      });
+      if (settings?.cv_url) setCvUrl(settings.cv_url);
+    })();
+    return () => { cancelled = true; };
   }, []);
 
   useEffect(() => {
@@ -222,7 +259,7 @@ const AboutPage = () => {
             </div>
 
             <div className="flex flex-col lg:flex-row items-center lg:items-start gap-4 lg:gap-4 lg:px-0 w-full">
-              <a href="https://drive.google.com/drive/folders/1BOm51Grsabb3zj6Xk27K-iRwI1zITcpo" className="w-full lg:w-auto">
+              <a href={cvUrl} target="_blank" rel="noopener noreferrer" className="w-full lg:w-auto">
                 <button
                   data-aos="fade-up"
                   data-aos-duration="800"

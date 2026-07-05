@@ -12,6 +12,7 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import CardProject from "../components/CardProject";
+import ProjectDetailModal from "../components/ProjectDetailModal";
 import TechStackIcon from "../components/TechStackIcon";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -103,20 +104,45 @@ function a11yProps(index) {
   };
 }
 
-// techStacks tetap sama
+// icon = slug do https://skillicons.dev/icons?i=<slug>, ou "/arquivo.ext" pra usar um ícone local em public/.
+// Pra adicionar uma tech nova, só incluir uma linha aqui.
 const techStacks = [
-  { icon: "html.svg", language: "HTML" },
-  { icon: "css.svg", language: "CSS" },
-  { icon: "javascript.svg", language: "JavaScript" },
-  { icon: "tailwind.svg", language: "Tailwind CSS" },
-  { icon: "reactjs.svg", language: "ReactJS" },
-  { icon: "vite.svg", language: "Vite" },
-  { icon: "nodejs.svg", language: "Node JS" },
-  { icon: "bootstrap.svg", language: "Bootstrap" },
-  { icon: "firebase.svg", language: "Firebase" },
-  { icon: "MUI.svg", language: "Material UI" },
-  { icon: "vercel.svg", language: "Vercel" },
-  { icon: "SweetAlert.svg", language: "SweetAlert2" },
+  { icon: "spring", language: "Spring Boot" },
+  { icon: "java", language: "Java" },
+  { icon: "postgres", language: "PostgreSQL" },
+  { icon: "nextjs", language: "Next.js" },
+  { icon: "nodejs", language: "Node JS" },
+  { icon: "kafka", language: "Kafka" },
+  { icon: "rabbitmq", language: "RabbitMQ" },
+  { icon: "go", language: "Golang" },
+  { icon: "mongodb", language: "MongoDB" },
+  { icon: "flutter", language: "Flutter" },
+  { icon: "ts", language: "TypeScript" },
+  { icon: "py", language: "Python" },
+  { icon: "docker", language: "Docker" },
+  { icon: "gcp", language: "Google Cloud" },
+  { icon: "js", language: "JavaScript" },
+  { icon: "astro", language: "Astro" },
+  { icon: "github", language: "GitHub" },
+  { icon: "git", language: "Git" },
+  { icon: "mysql", language: "MySQL" },
+  { icon: "elasticsearch", language: "Elasticsearch" },
+  { icon: "/sydle.png", language: "SYDLE" },
+  { icon: "/claude.svg", language: "Claude" },
+  { icon: "prisma", language: "Prisma" },
+  { icon: "/neo4j.webp", language: "Neo4j", needsLightBg: true },
+  { icon: "vercel", language: "Vercel" },
+  { icon: "firebase", language: "Firebase" },
+  { icon: "/tidb.ico", language: "TiDB" },
+  { icon: "redis", language: "Redis" },
+  { icon: "tailwind", language: "Tailwind CSS" },
+  { icon: "react", language: "React" },
+  { icon: "/react-native.png", language: "React Native" },
+  { icon: "/kanban.png", language: "Kanban", needsLightBg: true },
+  { icon: "/bpmn.svg", language: "BPMN" },
+  { icon: "/railway.webp", language: "Railway", needsLightBg: true },
+  { icon: "/render.png", language: "Render" },
+  { icon: "/supabase.webp", language: "Supabase" },
 ];
 
 export default function FullWidthTabs() {
@@ -125,6 +151,7 @@ export default function FullWidthTabs() {
   const [value, setValue] = useState(0);
   const [projects, setProjects] = useState([]);
   const [showAllProjects, setShowAllProjects] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
   const isMobile = window.innerWidth < 768;
   const initialItems = isMobile ? 4 : 6;
 
@@ -137,7 +164,14 @@ export default function FullWidthTabs() {
 
   const fetchData = useCallback(async () => {
     try {
-      const { data, error } = await supabase.from("projects").select("*").order('id', { ascending: false });
+      // As colunas reais na tabela "projects" estão em minúsculo/snake_case (ex: title, tech_stack),
+      // exceto as colunas _en que foram criadas com maiúscula (Title_en, Description_en, Features_en).
+      // Os aliases abaixo mapeiam pra PascalCase, que é o formato usado no resto do front-end.
+      const { data, error } = await supabase
+        .from("projects")
+        .select("id,created_at,Title:title,Title_en,Description:description,Description_en,Img:img,Video:video,TechStack:tech_stack,Features:features,Features_en,Link:link,Github:github,OrderIndex:order_index")
+        .order('order_index', { ascending: true, nullsFirst: false })
+        .order('created_at', { ascending: false });
       if (error) throw error;
       const projectData = data || [];
       setProjects(projectData);
@@ -283,12 +317,18 @@ export default function FullWidthTabs() {
                   >
                     <CardProject
                       Img={project.Img}
+                      Video={project.Video}
                       Title={project.Title}
                       Title_en={project.Title_en}
                       Description={project.Description}
                       Description_en={project.Description_en}
                       Link={project.Link}
+                      TechStack={project.TechStack}
+                      Features={project.Features}
+                      Features_en={project.Features_en}
+                      Github={project.Github}
                       id={project.id}
+                      onDetails={setSelectedProject}
                     />
                   </div>
                 ))}
@@ -319,7 +359,7 @@ export default function FullWidthTabs() {
                     data-aos={index % 3 === 0 ? "fade-up-right" : index % 3 === 1 ? "fade-up" : "fade-up-left"}
                     data-aos-duration={index % 3 === 0 ? "1000" : index % 3 === 1 ? "1200" : "1000"}
                   >
-                    <TechStackIcon TechStackIcon={stack.icon} Language={stack.language} />
+                    <TechStackIcon TechStackIcon={stack.icon} Language={stack.language} needsLightBg={stack.needsLightBg} />
                   </div>
                 ))}
               </div>
@@ -327,6 +367,12 @@ export default function FullWidthTabs() {
           </TabPanel>
         </SwipeableViews>
       </Box>
+      {selectedProject && (
+        <ProjectDetailModal
+          project={selectedProject}
+          onClose={() => setSelectedProject(null)}
+        />
+      )}
     </div>
   );
 }

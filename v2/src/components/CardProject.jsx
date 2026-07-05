@@ -1,10 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { ExternalLink, ArrowRight } from "lucide-react";
-import { toSlug } from "../utils/slug";
 import { useTranslation } from "../contexts/LanguageContext";
 
-const CardProject = ({ Img, Title, Title_en, Description, Description_en, Link: ProjectLink, id }) => {
+const CardProject = ({
+  Img, Video, Title, Title_en, Description, Description_en,
+  Link: ProjectLink, TechStack, Features, Features_en, Github, id, onDetails,
+}) => {
   const { t, language } = useTranslation();
   const tp = t.portfolio;
 
@@ -15,13 +16,6 @@ const CardProject = ({ Img, Title, Title_en, Description, Description_en, Link: 
     if (!ProjectLink) {
       e.preventDefault();
       alert(tp.demoUnavailable);
-    }
-  };
-
-  const handleDetails = (e) => {
-    if (!id) {
-      e.preventDefault();
-      alert(tp.detailsUnavailable);
     }
   };
 
@@ -65,14 +59,17 @@ const CardProject = ({ Img, Title, Title_en, Description, Description_en, Link: 
               )}
 
               {id ? (
-                <Link
-                  to={`/project/${toSlug(Title)}`}
-                  onClick={handleDetails}
+                <button
+                  type="button"
+                  onClick={() => onDetails({
+                    Img, Video, Title, Title_en, Description, Description_en,
+                    Link: ProjectLink, TechStack, Features, Features_en, Github, id,
+                  })}
                   className="inline-flex items-center space-x-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-white/90 transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                 >
                   <span className="text-sm font-medium">{tp.details}</span>
                   <ArrowRight className="w-4 h-4" />
-                </Link>
+                </button>
               ) : (
                 <span className="text-gray-500 text-sm">{tp.detailsUnavailable}</span>
               )}

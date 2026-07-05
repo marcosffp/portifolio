@@ -4,7 +4,8 @@ import { supabase } from '../supabase'
 import Projects from './dashboard/Projects'
 import Trajectory from './dashboard/Trajectory'
 import Comments from './dashboard/Comments'
-import { FolderGit2, MapPin, MessageSquare, LogOut, LayoutDashboard, Menu } from 'lucide-react'
+import Resume from './dashboard/Resume'
+import { FolderGit2, MapPin, MessageSquare, FileText, LogOut, LayoutDashboard, Menu } from 'lucide-react'
 import { useTranslation } from '../contexts/LanguageContext'
 import LanguageToggle from '../components/LanguageToggle'
 
@@ -18,6 +19,7 @@ export default function Dashboard() {
   const NAV_ITEMS = [
     { to: 'projects', label: td.projects, icon: FolderGit2 },
     { to: 'trajectory', label: td.trajectory, icon: MapPin },
+    { to: 'resume', label: td.resume, icon: FileText },
     { to: 'comments', label: td.comments, icon: MessageSquare },
   ]
 
@@ -136,6 +138,7 @@ export default function Dashboard() {
             <Route index element={<Navigate to="projects" replace />} />
             <Route path="projects" element={<Projects />} />
             <Route path="trajectory" element={<Trajectory />} />
+            <Route path="resume" element={<Resume />} />
             <Route path="comments" element={<Comments />} />
           </Routes>
         </main>

@@ -10,8 +10,17 @@ import {
   ExternalLink,
   Github,
   Pencil,
+  Video,
+  GripVertical,
 } from "lucide-react";
 import { useTranslation } from "../../contexts/LanguageContext";
+
+// Storage do Supabase rejeita chaves com acento/espaço (400) — remove diacríticos e troca o resto por "_"
+const DIACRITICS_RE = new RegExp("[̀-ͯ]", "g");
+const sanitizeFileName = (name) =>
+  name
+    .normalize("NFD").replace(DIACRITICS_RE, "")
+    .replace(/[^a-zA-Z0-9.\-_]/g, "_");
 
 const Card = ({ children, className = "" }) => (
   <div className={`relative group ${className}`}>
@@ -85,6 +94,9 @@ const ProjectCard = ({ project, onDelete, onEdit, labels }) => {
   return (
     <Card>
       <div className="p-4 flex flex-col h-full">
+        <div className="absolute top-2 left-2 z-10 p-1 rounded-md bg-black/50 text-gray-400 pointer-events-none">
+          <GripVertical className="w-4 h-4" />
+        </div>
         {project.Img && (
           <div className="w-full aspect-[16/8] rounded-xl mb-4 border border-white/8 overflow-hidden bg-white/5">
             {!imgLoaded && <div className="w-full h-full animate-pulse bg-white/5" />}
@@ -181,6 +193,8 @@ const ProjectForm = ({ initial, onSubmit, onCancel, submitLabel, uploading, td }
   });
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(initial?.Img || null);
+  const [videoFile, setVideoFile] = useState(null);
+  const [videoPreview, setVideoPreview] = useState(initial?.Video || null);
 
   const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
 
@@ -191,9 +205,16 @@ const ProjectForm = ({ initial, onSubmit, onCancel, submitLabel, uploading, td }
     setPreview(URL.createObjectURL(f));
   };
 
+  const handleVideoChange = (e) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    setVideoFile(f);
+    setVideoPreview(URL.createObjectURL(f));
+  };
+
   return (
     <form
-      onSubmit={(e) => { e.preventDefault(); onSubmit(form, file); }}
+      onSubmit={(e) => { e.preventDefault(); onSubmit(form, file, videoFile); }}
       className="p-5 sm:p-6 space-y-5"
     >
       {/* Language Tabs */}
@@ -308,6 +329,26 @@ const ProjectForm = ({ initial, onSubmit, onCancel, submitLabel, uploading, td }
             <input type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
           </label>
         </div>
+
+        <div className="sm:col-span-2 space-y-1.5">
+          <label className="text-xs text-indigo-300/70 uppercase tracking-wider font-medium">
+            {td.projectVideo}
+          </label>
+          <label className="flex items-center gap-4 w-full bg-[#0d0d22] border border-dashed border-white/15 rounded-xl px-4 py-4 cursor-pointer hover:border-indigo-500/40 hover:bg-white/4 transition-all">
+            {videoPreview ? (
+              <video src={videoPreview} className="h-16 w-24 object-cover rounded-lg border border-white/10" muted />
+            ) : (
+              <div className="w-24 h-16 rounded-lg bg-white/5 flex items-center justify-center border border-white/10">
+                <Video className="w-5 h-5 text-gray-600" />
+              </div>
+            )}
+            <div>
+              <p className="text-sm text-gray-300">{videoPreview ? td.changeVideo : td.uploadVideo}</p>
+              <p className="text-xs text-gray-600 mt-0.5">{td.videoFormats}</p>
+            </div>
+            <input type="file" accept="video/*" onChange={handleVideoChange} className="hidden" />
+          </label>
+        </div>
       </div>
 
       <div className="flex justify-end gap-2 pt-1">
@@ -341,12 +382,20 @@ export default function Projects() {
   const [showCreate, setShowCreate] = useState(false);
   const [editProject, setEditProject] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [draggedId, setDraggedId] = useState(null);
+
+  // As colunas reais na tabela "projects" estão em minúsculo/snake_case (ex: title, tech_stack),
+  // exceto as colunas _en que foram criadas com maiúscula (Title_en, Description_en, Features_en).
+  // Os aliases abaixo mapeiam pra PascalCase, que é o formato usado no resto do front-end.
+  const PROJECTS_SELECT =
+    "id,created_at,Title:title,Title_en,Description:description,Description_en,Img:img,Video:video,TechStack:tech_stack,Features:features,Features_en,Link:link,Github:github,OrderIndex:order_index";
 
   const fetchProjects = async () => {
     setLoading(true);
     const { data } = await supabase
       .from("projects")
-      .select("*")
+      .select(PROJECTS_SELECT)
+      .order("order_index", { ascending: true, nullsFirst: false })
       .order("created_at", { ascending: false });
     setProjects(data || []);
     setLoading(false);
@@ -354,55 +403,109 @@ export default function Projects() {
 
   useEffect(() => { fetchProjects(); }, []);
 
+  const persistOrder = async (orderedProjects) => {
+    await Promise.all(
+      orderedProjects.map((p, index) =>
+        supabase.from("projects").update({ order_index: index }).eq("id", p.id)
+      )
+    );
+  };
+
+  const handleDragStart = (id) => setDraggedId(id);
+  const handleDragOver = (e) => e.preventDefault();
+  const handleDragEnd = () => setDraggedId(null);
+
+  const handleDrop = (targetId) => {
+    if (draggedId === null || draggedId === targetId) return;
+    setProjects((prev) => {
+      const next = [...prev];
+      const fromIndex = next.findIndex((p) => p.id === draggedId);
+      const toIndex = next.findIndex((p) => p.id === targetId);
+      const [moved] = next.splice(fromIndex, 1);
+      next.splice(toIndex, 0, moved);
+      persistOrder(next);
+      return next;
+    });
+    setDraggedId(null);
+  };
+
   const uploadImage = async (f) => {
-    const fileName = `${Date.now()}-${f.name}`;
-    await supabase.storage.from("project-images").upload(fileName, f);
+    const fileName = `${Date.now()}-${sanitizeFileName(f.name)}`;
+    const { error } = await supabase.storage.from("project-images").upload(fileName, f);
+    if (error) throw error;
     const { data } = supabase.storage.from("project-images").getPublicUrl(fileName);
+    return data.publicUrl;
+  };
+
+  const uploadVideo = async (f) => {
+    const fileName = `${Date.now()}-${sanitizeFileName(f.name)}`;
+    const { error } = await supabase.storage.from("project-videos").upload(fileName, f);
+    if (error) throw error;
+    const { data } = supabase.storage.from("project-videos").getPublicUrl(fileName);
     return data.publicUrl;
   };
 
   const parseList = (str) => str ? str.split(",").map((s) => s.trim()).filter(Boolean) : [];
 
-  const handleCreate = async (form, file) => {
+  const handleCreate = async (form, file, videoFile) => {
     setUploading(true);
-    let imgUrl = "";
-    if (file) imgUrl = await uploadImage(file);
-    await supabase.from("projects").insert({
-      Title: form.Title,
-      Title_en: form.Title_en || null,
-      Description: form.Description,
-      Description_en: form.Description_en || null,
-      Img: imgUrl,
-      TechStack: parseList(form.TechStack),
-      Features: parseList(form.Features),
-      Features_en: form.Features_en ? parseList(form.Features_en) : null,
-      Link: form.Link,
-      Github: form.Github,
-    });
-    setShowCreate(false);
-    setUploading(false);
-    fetchProjects();
+    try {
+      let imgUrl = "";
+      if (file) imgUrl = await uploadImage(file);
+      let videoUrl = "";
+      if (videoFile) videoUrl = await uploadVideo(videoFile);
+      const { error } = await supabase.from("projects").insert({
+        title: form.Title,
+        Title_en: form.Title_en || null,
+        description: form.Description,
+        Description_en: form.Description_en || null,
+        img: imgUrl,
+        video: videoUrl || null,
+        order_index: projects.length,
+        tech_stack: parseList(form.TechStack),
+        features: parseList(form.Features),
+        Features_en: form.Features_en ? parseList(form.Features_en) : null,
+        link: form.Link,
+        github: form.Github,
+      });
+      if (error) throw error;
+      setShowCreate(false);
+      fetchProjects();
+    } catch (err) {
+      alert(err.message || "Erro ao salvar o projeto");
+    } finally {
+      setUploading(false);
+    }
   };
 
-  const handleEdit = async (form, file) => {
+  const handleEdit = async (form, file, videoFile) => {
     setUploading(true);
-    let imgUrl = editProject.Img || "";
-    if (file) imgUrl = await uploadImage(file);
-    await supabase.from("projects").update({
-      Title: form.Title,
-      Title_en: form.Title_en || null,
-      Description: form.Description,
-      Description_en: form.Description_en || null,
-      Img: imgUrl,
-      TechStack: parseList(form.TechStack),
-      Features: parseList(form.Features),
-      Features_en: form.Features_en ? parseList(form.Features_en) : null,
-      Link: form.Link,
-      Github: form.Github,
-    }).eq("id", editProject.id);
-    setEditProject(null);
-    setUploading(false);
-    fetchProjects();
+    try {
+      let imgUrl = editProject.Img || "";
+      if (file) imgUrl = await uploadImage(file);
+      let videoUrl = editProject.Video || "";
+      if (videoFile) videoUrl = await uploadVideo(videoFile);
+      const { error } = await supabase.from("projects").update({
+        title: form.Title,
+        Title_en: form.Title_en || null,
+        description: form.Description,
+        Description_en: form.Description_en || null,
+        img: imgUrl,
+        video: videoUrl || null,
+        tech_stack: parseList(form.TechStack),
+        features: parseList(form.Features),
+        Features_en: form.Features_en ? parseList(form.Features_en) : null,
+        link: form.Link,
+        github: form.Github,
+      }).eq("id", editProject.id);
+      if (error) throw error;
+      setEditProject(null);
+      fetchProjects();
+    } catch (err) {
+      alert(err.message || "Erro ao salvar o projeto");
+    } finally {
+      setUploading(false);
+    }
   };
 
   const deleteProject = async (id) => {
@@ -481,13 +584,22 @@ export default function Projects() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
           {projects.map((project) => (
-            <ProjectCard
+            <div
               key={project.id}
-              project={project}
-              onDelete={deleteProject}
-              onEdit={setEditProject}
-              labels={td}
-            />
+              draggable
+              onDragStart={() => handleDragStart(project.id)}
+              onDragOver={handleDragOver}
+              onDrop={() => handleDrop(project.id)}
+              onDragEnd={handleDragEnd}
+              className={`cursor-move transition-opacity ${draggedId === project.id ? "opacity-40" : "opacity-100"}`}
+            >
+              <ProjectCard
+                project={project}
+                onDelete={deleteProject}
+                onEdit={setEditProject}
+                labels={td}
+              />
+            </div>
           ))}
         </div>
       )}

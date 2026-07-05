@@ -35,12 +35,12 @@ const ContactPage = () => {
     });
 
     try {
-      const formSubmitUrl = 'https://formsubmit.co/ekizulfarrachman@gmail.com';
+      const formSubmitUrl = 'https://formsubmit.co/marcosferralbe@gmail.com';
       const submitData = new FormData();
       submitData.append('name', formData.name);
       submitData.append('email', formData.email);
       submitData.append('message', formData.message);
-      submitData.append('_subject', 'Pesan Baru dari Website Portfolio');
+      submitData.append('_subject', 'Nova mensagem do portfólio');
       submitData.append('_captcha', 'false');
       submitData.append('_template', 'table');
 

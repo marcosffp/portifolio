@@ -11,6 +11,7 @@ import { AnimatePresence } from "framer-motion";
 import Footer from "./components/Footer";
 
 import Login from "./Pages/Login";
+import ResetPassword from "./Pages/ResetPassword";
 import Dashboard from "./Pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -83,6 +84,7 @@ function App() {
 
           {/* AUTH */}
           <Route path="/login" element={<Login />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
           {/* ADMIN (PROTECTED) */}
           <Route
