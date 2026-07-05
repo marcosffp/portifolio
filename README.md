@@ -1,4 +1,4 @@
-<img width="1600" style="height:auto; border-radius: 12px;" alt="banner" src="assets/img/banner.png" />
+<img width="1600" style="height:auto; border-radius: 12px;" alt="banner" src="assets/banner.png" />
 
 # Marcos Alberto · Portfólio Pessoal
 
@@ -51,7 +51,7 @@ Além da vitrine pública, o projeto conta com um **painel administrativo proteg
 
 ## 🖼️ Preview
 
-![home](assets/img/home.png)
+![home](assets/home.png)
 
 ---
 
