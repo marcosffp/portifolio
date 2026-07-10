@@ -1,13 +1,18 @@
 import React from 'react';
 
+const resolveIconSrc = (icon) => {
+  if (icon.startsWith('/') || icon.startsWith('http')) return icon;
+  return `https://skillicons.dev/icons?i=${icon}`;
+};
+
 const TechStackIcon = ({ TechStackIcon, Language, needsLightBg }) => {
   return (
     <div className="group p-6 rounded-2xl bg-slate-800/50 hover:bg-slate-700/50 transition-all duration-300 ease-in-out flex flex-col items-center justify-center gap-3 hover:scale-105 cursor-pointer shadow-lg hover:shadow-xl">
       <div className="relative">
         <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-0 group-hover:opacity-50 blur transition duration-300"></div>
-        <div className={`relative rounded-xl ${needsLightBg ? 'bg-white/10 p-2' : ''}`}>
+        <div className={`relative rounded-xl ${needsLightBg ? 'bg-white/90 p-2' : ''}`}>
           <img
-            src={TechStackIcon.startsWith('/') ? TechStackIcon : `https://skillicons.dev/icons?i=${TechStackIcon}`}
+            src={resolveIconSrc(TechStackIcon)}
             alt={`${Language} icon`}
             className="h-16 w-16 md:h-20 md:w-20 transform transition-transform duration-300"
           />

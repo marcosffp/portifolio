@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 
 import { supabase } from "../supabase";
 import { useTranslation } from "../contexts/LanguageContext";
@@ -17,7 +17,7 @@ import TechStackIcon from "../components/TechStackIcon";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import TrajectoryTimeline from "../components/TrajectoryTimeline";
-import { Code, GitBranch, Boxes } from "lucide-react";
+import { Code, GitBranch, Boxes, Search, X } from "lucide-react";
 
 
 const ToggleButton = ({ onClick, isShowingMore, labelMore, labelLess }) => (
@@ -104,45 +104,62 @@ function a11yProps(index) {
   };
 }
 
-// icon = slug do https://skillicons.dev/icons?i=<slug>, ou "/arquivo.ext" pra usar um ícone local em public/.
+// icon = slug do https://skillicons.dev/icons?i=<slug>, URL completa (ex: cdn.simpleicons.org)
+// ou "/arquivo.ext" pra usar um ícone local em public/.
+// categories = lista de chaves usadas pelos filtros da aba Tech Stack (ver techCategories em
+// translations/index.js). Uma tech pode pertencer a mais de uma categoria.
 // Pra adicionar uma tech nova, só incluir uma linha aqui.
 const techStacks = [
-  { icon: "spring", language: "Spring Boot" },
-  { icon: "java", language: "Java" },
-  { icon: "postgres", language: "PostgreSQL" },
-  { icon: "nextjs", language: "Next.js" },
-  { icon: "nodejs", language: "Node JS" },
-  { icon: "kafka", language: "Kafka" },
-  { icon: "rabbitmq", language: "RabbitMQ" },
-  { icon: "go", language: "Golang" },
-  { icon: "mongodb", language: "MongoDB" },
-  { icon: "flutter", language: "Flutter" },
-  { icon: "ts", language: "TypeScript" },
-  { icon: "py", language: "Python" },
-  { icon: "docker", language: "Docker" },
-  { icon: "gcp", language: "Google Cloud" },
-  { icon: "js", language: "JavaScript" },
-  { icon: "astro", language: "Astro" },
-  { icon: "github", language: "GitHub" },
-  { icon: "git", language: "Git" },
-  { icon: "mysql", language: "MySQL" },
-  { icon: "elasticsearch", language: "Elasticsearch" },
-  { icon: "/sydle.png", language: "SYDLE" },
-  { icon: "/claude.svg", language: "Claude" },
-  { icon: "prisma", language: "Prisma" },
-  { icon: "/neo4j.webp", language: "Neo4j", needsLightBg: true },
-  { icon: "vercel", language: "Vercel" },
-  { icon: "firebase", language: "Firebase" },
-  { icon: "/tidb.ico", language: "TiDB" },
-  { icon: "redis", language: "Redis" },
-  { icon: "tailwind", language: "Tailwind CSS" },
-  { icon: "react", language: "React" },
-  { icon: "/react-native.png", language: "React Native" },
-  { icon: "/kanban.png", language: "Kanban", needsLightBg: true },
-  { icon: "/bpmn.svg", language: "BPMN" },
-  { icon: "/railway.webp", language: "Railway", needsLightBg: true },
-  { icon: "/render.png", language: "Render" },
-  { icon: "/supabase.webp", language: "Supabase" },
+  { icon: "spring", language: "Spring Boot", categories: ["backend"] },
+  { icon: "java", language: "Java", categories: ["languages"] },
+  { icon: "postgres", language: "PostgreSQL", categories: ["database"] },
+  { icon: "nextjs", language: "Next.js", categories: ["frontend"] },
+  { icon: "nodejs", language: "Node JS", categories: ["backend"] },
+  { icon: "kafka", language: "Kafka", categories: ["devops"] },
+  { icon: "rabbitmq", language: "RabbitMQ", categories: ["devops"] },
+  { icon: "go", language: "Golang", categories: ["languages", "backend"] },
+  { icon: "mongodb", language: "MongoDB", categories: ["database"] },
+  { icon: "flutter", language: "Flutter", categories: ["mobile"] },
+  { icon: "ts", language: "TypeScript", categories: ["languages"] },
+  { icon: "py", language: "Python", categories: ["languages"] },
+  { icon: "docker", language: "Docker", categories: ["devops"] },
+  { icon: "gcp", language: "Google Cloud", categories: ["devops"] },
+  { icon: "js", language: "JavaScript", categories: ["languages"] },
+  { icon: "astro", language: "Astro", categories: ["frontend"] },
+  { icon: "github", language: "GitHub", categories: ["tools"] },
+  { icon: "git", language: "Git", categories: ["tools"] },
+  { icon: "mysql", language: "MySQL", categories: ["database"] },
+  { icon: "elasticsearch", language: "Elasticsearch", categories: ["devops"] },
+  { icon: "/sydle.png", language: "SYDLE", categories: ["tools"] },
+  { icon: "/claude.svg", language: "Claude", categories: ["tools"] },
+  { icon: "prisma", language: "Prisma", categories: ["database"] },
+  { icon: "/neo4j.webp", language: "Neo4j", categories: ["database"], needsLightBg: true },
+  { icon: "vercel", language: "Vercel", categories: ["devops"] },
+  { icon: "firebase", language: "Firebase", categories: ["backend", "devops"] },
+  { icon: "/tidb.ico", language: "TiDB", categories: ["database"] },
+  { icon: "redis", language: "Redis", categories: ["devops"] },
+  { icon: "tailwind", language: "Tailwind CSS", categories: ["frontend"] },
+  { icon: "react", language: "React", categories: ["frontend"] },
+  { icon: "/react-native.png", language: "React Native", categories: ["mobile"] },
+  { icon: "/kanban.png", language: "Kanban", categories: ["tools"], needsLightBg: true },
+  { icon: "/bpmn.svg", language: "BPMN", categories: ["tools"] },
+  { icon: "/railway.webp", language: "Railway", categories: ["devops"], needsLightBg: true },
+  { icon: "/render.png", language: "Render", categories: ["devops"] },
+  { icon: "/supabase.webp", language: "Supabase", categories: ["backend", "devops"] },
+  { icon: "figma", language: "Figma", categories: ["tools"] },
+  { icon: "https://cdn.simpleicons.org/diagramsdotnet", language: "Draw.io", categories: ["tools"] },
+  { icon: "https://cdn.simpleicons.org/dbeaver", language: "DBeaver", categories: ["tools"], needsLightBg: true },
+  { icon: "replit", language: "Replit", categories: ["tools"] },
+  { icon: "c", language: "C", categories: ["languages"] },
+  { icon: "rust", language: "Rust", categories: ["languages", "backend"] },
+  { icon: "dart", language: "Dart", categories: ["languages"] },
+  { icon: "vite", language: "Vite", categories: ["frontend"] },
+  { icon: "jest", language: "Jest", categories: ["testing"] },
+  { icon: "https://cdn.simpleicons.org/k6", language: "k6", categories: ["testing"] },
+  { icon: "linux", language: "Linux", categories: ["devops"] },
+  { icon: "gradle", language: "Gradle", categories: ["devops"] },
+  { icon: "maven", language: "Maven", categories: ["devops"] },
+  { icon: "prometheus", language: "Prometheus", categories: ["devops"] },
 ];
 
 export default function FullWidthTabs() {
@@ -152,8 +169,33 @@ export default function FullWidthTabs() {
   const [projects, setProjects] = useState([]);
   const [showAllProjects, setShowAllProjects] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [techSearch, setTechSearch] = useState("");
+  const [techCategory, setTechCategory] = useState("all");
   const isMobile = window.innerWidth < 768;
   const initialItems = isMobile ? 4 : 6;
+
+  const techCategoryTabs = useMemo(() => {
+    const counts = techStacks.reduce((acc, stack) => {
+      stack.categories.forEach((category) => {
+        acc[category] = (acc[category] || 0) + 1;
+      });
+      return acc;
+    }, {});
+    return Object.keys(t.portfolio.techCategories).map((key) => ({
+      value: key,
+      label: t.portfolio.techCategories[key],
+      count: key === "all" ? techStacks.length : counts[key] || 0,
+    }));
+  }, [t]);
+
+  const filteredTechStacks = useMemo(() => {
+    const query = techSearch.trim().toLowerCase();
+    return techStacks.filter((stack) => {
+      const matchesCategory = techCategory === "all" || stack.categories.includes(techCategory);
+      const matchesSearch = !query || stack.language.toLowerCase().includes(query);
+      return matchesCategory && matchesSearch;
+    });
+  }, [techSearch, techCategory]);
 
   useEffect(() => {
     AOS.init({
@@ -351,18 +393,71 @@ export default function FullWidthTabs() {
           </TabPanel>
 
           <TabPanel value={value} index={2} dir={theme.direction}>
-            <div className="container mx-auto flex justify-center items-center overflow-hidden pb-[5%]">
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 lg:gap-8 gap-5">
-                {techStacks.map((stack, index) => (
-                  <div
-                    key={index}
-                    data-aos={index % 3 === 0 ? "fade-up-right" : index % 3 === 1 ? "fade-up" : "fade-up-left"}
-                    data-aos-duration={index % 3 === 0 ? "1000" : index % 3 === 1 ? "1200" : "1000"}
-                  >
-                    <TechStackIcon TechStackIcon={stack.icon} Language={stack.language} needsLightBg={stack.needsLightBg} />
-                  </div>
-                ))}
+            <div className="container mx-auto pb-[5%]">
+              <div className="flex flex-col gap-4 mb-8">
+                <div className="relative w-full sm:max-w-sm">
+                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
+                  <input
+                    type="text"
+                    value={techSearch}
+                    onChange={(e) => setTechSearch(e.target.value)}
+                    placeholder={t.portfolio.techSearchPlaceholder}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-10 py-2.5 text-gray-200 placeholder-gray-600 text-sm outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-all"
+                  />
+                  {techSearch && (
+                    <button
+                      onClick={() => setTechSearch("")}
+                      aria-label="clear"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+
+                <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-thin">
+                  {techCategoryTabs.map((tab) => (
+                    <button
+                      key={tab.value}
+                      onClick={() => setTechCategory(tab.value)}
+                      className={`flex items-center gap-1.5 shrink-0 px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm transition-all duration-200 border ${
+                        techCategory === tab.value
+                          ? "bg-gradient-to-r from-indigo-500/25 to-purple-500/20 border-indigo-500/35 text-white font-medium"
+                          : "bg-white/5 border-white/10 text-gray-400 hover:text-gray-200 hover:border-white/20"
+                      }`}
+                    >
+                      {tab.label}
+                      <span
+                        className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+                          techCategory === tab.value ? "bg-white/15 text-white" : "bg-white/10 text-gray-500"
+                        }`}
+                      >
+                        {tab.count}
+                      </span>
+                    </button>
+                  ))}
+                </div>
               </div>
+
+              {filteredTechStacks.length > 0 ? (
+                <div className="flex justify-center items-center overflow-hidden">
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 lg:gap-8 gap-5">
+                    {filteredTechStacks.map((stack) => (
+                      <div
+                        key={stack.language}
+                        data-aos="fade-up"
+                        data-aos-duration="800"
+                      >
+                        <TechStackIcon TechStackIcon={stack.icon} Language={stack.language} needsLightBg={stack.needsLightBg} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center text-gray-500 text-sm py-12">
+                  {t.portfolio.techNoResults}
+                </div>
+              )}
             </div>
           </TabPanel>
         </SwipeableViews>
