@@ -172,7 +172,7 @@ export default function FullWidthTabs() {
   const [techSearch, setTechSearch] = useState("");
   const [techCategory, setTechCategory] = useState("all");
   const isMobile = window.innerWidth < 768;
-  const initialItems = isMobile ? 4 : 6;
+  const initialItems = isMobile ? 4 : 9;
 
   const techCategoryTabs = useMemo(() => {
     const counts = techStacks.reduce((acc, stack) => {
